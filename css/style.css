@@ -2,9 +2,14 @@ body {
   text-align: center;
 }
 
+ul {
+  position: relative;
+}
+
 li {
   display: inline-block;
   /*float: right;*/
+  /*position: relative;*/
 
 }
 
@@ -22,6 +27,9 @@ li {
   border: 1px solid black;
   display: inline-block;
   /*margin:0 0 0 -20px;*/
-  position: relative;
-  margin: 0 0 0 -4%
+  position: absolute;
+  top: 0px;
+  /*left: -20px:*/
+  /*right: -33px*/
+  /*margin: 20 50 0 -4%*/
 }
