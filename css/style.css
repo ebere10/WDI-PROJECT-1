@@ -1,9 +1,27 @@
 body {
+  text-align: center;
 }
 
 li {
+  display: inline-block;
+  /*float: right;*/
+
+}
+
+
+.white{
   width: 100px;
   height: 350px;
   border: 1px solid black;
   display: inline-block;
+}
+
+.black {
+  width: 50px;
+  height: 200px;
+  border: 1px solid black;
+  display: inline-block;
+  /*margin:0 0 0 -20px;*/
+  position: relative;
+  margin: 0 0 0 -4%
 }
