@@ -40,19 +40,21 @@ function computerRandomKey() {
 function playSequence() {
 //computer plays a random sequence
 
+
   playerInput();
 }
 
-function playerInput() {
+function playerInput() { //player clicks keys
+
   if ($playerGuess.length === $sequenceLength) {
     checkForMatch();
   }
 }
 
 function checkForMatch() {
-  var $result = $playerGuess === $computerSequence;
+  var $result = $playerGuess.reverse() === $computerSequence;
   if ($result) {
-    //computer choose another random key and push it into the computerSequence array - then playSequence again
+    //computer choose another random key and push it into the computerSequence array - then playSequence function again
   } else {
     //game over and reset
   }
