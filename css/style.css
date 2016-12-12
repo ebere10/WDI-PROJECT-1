@@ -33,3 +33,7 @@ li {
   /*right: -33px*/
   /*margin: 20 50 0 -4%*/
 }
+
+.illuminated {
+  background-color: gold;
+}
