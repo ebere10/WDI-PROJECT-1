@@ -3,16 +3,14 @@ $(startGame);
 var $computerSequence = [];
 var $playerGuess = [];
 var $sequenceLength = 3;
-
-var $keys = $('li');
+var $keys;
 
 function startGame(){
+  $keys = $('li');
 
   var $start = $('#start');
   $start.on('click', randomSequence);
 
-  //why doesn't it work when- var $keys = $(li) -is defined globally and not in the function?
-  var $keys = $('li');
   $keys.on('click', function() {
     var $this = $(this);
     $this.toggleClass('illuminated');
@@ -33,20 +31,37 @@ function randomSequence() {
   playSequence();
 }
 
-function computerRandomKey() {
+function computerRandomKey() { //computer choosing random key
+  var $keys = $('li');
   return Math.ceil(Math.random() * ($keys).length);
 }
 
-function playSequence() {
-//computer plays a random sequence
 
 
-  playerInput();
+function playSequence(){
+  var $keys = $('li');
+  var i = 0;
+  var interval = setInterval(function(){
+    console.log($computerSequence[i]);
+    $($keys[$computerSequence[i]]).toggleClass('illuminated');
+    var noteToPlay = $keys[$computerSequence[i]].getAttribute('id');
+    var audio = new Audio('piano_notes/' + noteToPlay + '.wav');
+    audio.play();
+    setTimeout(function() {
+      $($keys[$computerSequence[i]]).toggleClass('illuminated');
+    }, 500);
+
+    i++;
+    if(i === $computerSequence.length) {
+      clearInterval(interval);
+    }
+  }, 500);
 }
+
 
 function playerInput() { //player clicks keys
 
-  if ($playerGuess.length === $sequenceLength) {
+  if ($playerGuess.length === $computerSequence.length) {
     checkForMatch();
   }
 }
@@ -54,7 +69,7 @@ function playerInput() { //player clicks keys
 function checkForMatch() {
   var $result = $playerGuess.reverse() === $computerSequence;
   if ($result) {
-    //computer choose another random key and push it into the computerSequence array - then playSequence function again
+    //computer chooses another random key and pushes it into the computerSequence array - then playSequence function again maybe... or something...
   } else {
     //game over and reset
   }

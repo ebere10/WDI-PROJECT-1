@@ -25,6 +25,7 @@ li {
   width: 50px;
   height: 200px;
   border: 1px solid black;
+  background: white;
   display: inline-block;
   /*margin:0 0 0 -20px;*/
   position: absolute;
