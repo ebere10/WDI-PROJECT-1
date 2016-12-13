@@ -75,48 +75,99 @@ function getReadyToPlay() {
   $lis.on('click', guessNote);
 }
 
+//new stuff from here on
 function guessNote() {
   var $this = $(this);
-  // Find the key number of the li we just clicked on
-  var guess = lisArray.indexOf(this);
-  console.log('You guessed ', guess);
-
-  // Work out how many guesses the player has had
-  var numberOfGuesses = playerSequence.length;
-
-  // Check if the player's guess is correct
-  if (computerSequence[numberOfGuesses] === guess) {
-    console.log('correct');
-    // Illuminate the key that we clicked on
+  // Illuminate the key that we clicked on
+  $this.toggleClass('illuminated');
+      // Create an audio element using the letter id of the note we clicked
+  var audio = new Audio('piano_notes/' + $this.attr('id') + '.wav');
+      // Play the audio
+  audio.play();
+      // When it's finished, turn it off
+  $(audio).on('ended', function(){
     $this.toggleClass('illuminated');
-    // Create an audio element using the letter id of the note we clicked
-    var audio = new Audio('piano_notes/' + $this.attr('id') + '.wav');
-    // Play the audio
-    audio.play();
+  });
 
-    // When it's finished, turn it off
-    $(audio).on('ended', function(){
-      $this.toggleClass('illuminated');
-    });
+  playerSequence.push($this);
+  console.log(playerSequence);
 
-    // Add the guess to the seqence of player guesses
-    playerSequence.push(guess);
-    console.log(playerSequence);
-
-    // Check if the player has the played the same number of correct keys
-    if (playerSequence.length === computerSequence.length) {
-      setTimeout(function() {
-        // Empty the computerSequence
-        computerSequence = [];
-        // Empty the playerSequence
-        playerSequence   = [];
-        // Increase the number of sounds
-        sequenceLength   = sequenceLength + 1;
-        // Start again
-        generateComputerSequence();
-      }, 2000);
-    }
-  } else {
-    console.log('wrong');
+  //if computerSequence and playerSequence is same length, check for a match.
+  if (computerSequence.length === playerSequence.length) {
+    // function to check for a match.
+    checkForMatch();
   }
 }
+
+function checkForMatch() {
+
+//if it's a match do this...
+  setTimeout(function() {
+    // Empty the computerSequence
+    computerSequence = [];
+    // Empty the playerSequence
+    playerSequence   = [];
+    // Increase the number of sounds
+    sequenceLength   = sequenceLength + 1;
+    // Start again
+    generateComputerSequence();
+  }, 2000);
+
+  // else, do this...
+  alert('wrong, you lose');
+  //and reset game
+  computerSequence = [];
+  // Empty the playerSequence
+  playerSequence   = [];
+  // reset the sequenceLength
+  sequenceLength   = 3;
+  // and start again
+  generateComputerSequence();
+}
+
+
+// function guessNote() {
+//   var $this = $(this);
+//   // Find the key number of the li we just clicked on
+//   var guess = lisArray.indexOf(this);
+//   console.log('You guessed ', guess);
+//
+//   // Work out how many guesses the player has had
+//   var numberOfGuesses = playerSequence.length;
+//
+//   // Check if the player's guess is correct
+//   if (computerSequence[numberOfGuesses] === guess) {
+//     console.log('correct');
+//     // Illuminate the key that we clicked on
+//     $this.toggleClass('illuminated');
+//     // Create an audio element using the letter id of the note we clicked
+//     var audio = new Audio('piano_notes/' + $this.attr('id') + '.wav');
+//     // Play the audio
+//     audio.play();
+//
+//     // When it's finished, turn it off
+//     $(audio).on('ended', function(){
+//       $this.toggleClass('illuminated');
+//     });
+//
+//     // Add the guess to the seqence of player guesses
+//     playerSequence.push(guess);
+//     console.log(playerSequence);
+//
+//     // Check if the player has the played the same number of correct keys
+//     if (playerSequence.length === computerSequence.length) {
+//       setTimeout(function() {
+//         // Empty the computerSequence
+//         computerSequence = [];
+//         // Empty the playerSequence
+//         playerSequence   = [];
+//         // Increase the number of sounds
+//         sequenceLength   = sequenceLength + 1;
+//         // Start again
+//         generateComputerSequence();
+//       }, 2000);
+//     }
+//   } else {
+//     console.log('wrong');
+//   }
+// }
