@@ -1,76 +1,122 @@
 $(startGame);
 
-var $computerSequence = [];
-var $playerGuess = [];
-var $sequenceLength = 3;
-var $keys;
+var computerSequence = [];
+var playerSequence   = [];
+var sequenceLength   = 3;
+var $lis;
+var $start;
+var lisArray;
 
 function startGame(){
-  $keys = $('li');
+  // Get list items from the DOM
+  $lis     = $('li');
+  // Convert HTMLCollection to an array
+  lisArray = [].slice.call($lis);
 
-  var $start = $('#start');
-  $start.on('click', randomSequence);
+  // Get the start button from the DOM
+  $start = $('#start');
 
-  $keys.on('click', function() {
-    var $this = $(this);
-    $this.toggleClass('illuminated');
-    var audio = new Audio('piano_notes/' + $this.attr('id') + '.wav');
-    audio.play();
-// console.log(this, "click");
-    setTimeout(function() {
-      $this.toggleClass('illuminated');
-    }, 500);
-  });
+  // Generate generateComputerSequence when you click the start button
+  $start.on('click', generateComputerSequence);
 }
 
 
-function randomSequence() {
-  for (var i = 0; i < $sequenceLength; i++) {
-    $computerSequence.push(computerRandomKey());
+function generateComputerSequence() {
+  for (var i = 0; i < sequenceLength; i++) {
+    computerSequence.push(computerRandomKey());
   }
+  console.log(computerSequence);
   playSequence();
 }
 
-function computerRandomKey() { //computer choosing random key
-  var $keys = $('li');
-  return Math.ceil(Math.random() * ($keys).length);
+// Computer choosing random key
+function computerRandomKey() {
+  return Math.floor(Math.random() * $lis.length);
 }
 
+function playAudio(index) {
+  // Fetch the key value from the computerSequence
+  // If the computer sequence was [5,6,7]
+  // computerSequence[1] would return 6
+  var key        = computerSequence[index];
+  // Use that key (6) to fetch the li element from the the DOM
+  // We wrap it in $() to make it a jQuery object with special methods
+  var $nextKey   = $($lis[key]);
+  // Get it's id, using the jQuery method .attr()
+  var noteToPlay = $nextKey.attr('id');
+  // Make an audio element
+  var audio      = new Audio('piano_notes/' + noteToPlay + '.wav');
+  // Illuminate it
+  $nextKey.toggleClass('illuminated');
+  // Play the sound
+  audio.play();
 
+  // When it has finished...
+  $(audio).on('ended', function(){
+    // Turn it off
+    $nextKey.toggleClass('illuminated');
+    // Add ind
+    var nextIndex = index + 1;
+    // Is the next greater than the total number in the computerSequence?
+    if (nextIndex === computerSequence.length) {
+      return getReadyToPlay();
+    } else {
+      playAudio(nextIndex);
+    }
+  });
+}
 
 function playSequence(){
-  var $keys = $('li');
-  var i = 0;
-  var interval = setInterval(function(){
-    console.log($computerSequence[i]);
-    $($keys[$computerSequence[i]]).toggleClass('illuminated');
-    var noteToPlay = $keys[$computerSequence[i]].getAttribute('id');
-    var audio = new Audio('piano_notes/' + noteToPlay + '.wav');
+  // Play the audio starting at 0 index
+  playAudio(0);
+}
+
+function getReadyToPlay() {
+  $lis.on('click', guessNote);
+}
+
+function guessNote() {
+  var $this = $(this);
+  // Find the key number of the li we just clicked on
+  var guess = lisArray.indexOf(this);
+  console.log('You guessed ', guess);
+
+  // Work out how many guesses the player has had
+  var numberOfGuesses = playerSequence.length;
+
+  // Check if the player's guess is correct
+  if (computerSequence[numberOfGuesses] === guess) {
+    console.log('correct');
+    // Illuminate the key that we clicked on
+    $this.toggleClass('illuminated');
+    // Create an audio element using the letter id of the note we clicked
+    var audio = new Audio('piano_notes/' + $this.attr('id') + '.wav');
+    // Play the audio
     audio.play();
-    setTimeout(function() {
-      $($keys[$computerSequence[i]]).toggleClass('illuminated');
-    }, 500);
 
-    i++;
-    if(i === $computerSequence.length) {
-      clearInterval(interval);
+    // When it's finished, turn it off
+    $(audio).on('ended', function(){
+      $this.toggleClass('illuminated');
+    });
+
+    // Add the guess to the seqence of player guesses
+    playerSequence.push(guess);
+    console.log(playerSequence);
+
+    // Check if the player has the played the same number of correct keys
+    if (playerSequence.length === computerSequence.length) {
+      setTimeout(function() {
+        // Empty the computerSequence
+        computerSequence = [];
+        // Empty the playerSequence
+        playerSequence   = [];
+        // Increase the number of sounds
+        sequenceLength   = sequenceLength + 1;
+        // Start again
+        generateComputerSequence();
+      }, 2000);
     }
-  }, 500);
-}
-
-
-function playerInput() { //player clicks keys
-
-  if ($playerGuess.length === $computerSequence.length) {
-    checkForMatch();
-  }
-}
-
-function checkForMatch() {
-  var $result = $playerGuess.reverse() === $computerSequence;
-  if ($result) {
-    //computer chooses another random key and pushes it into the computerSequence array - then playSequence function again maybe... or something...
   } else {
-    //game over and reset
+    console.log('wrong');
   }
 }
