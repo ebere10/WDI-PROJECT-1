@@ -3,11 +3,11 @@ This is my first project from my web development immersive course at General Ass
 
 I created a musical memory game called **Play That Tune!** where the user has to repeat the same sequence played by the computer. If they're correct then the computer plays another sequence of a longer duration. But one wrong move and the player goes back to the first stage.
 
-![memory game](https://cloud.githubusercontent.com/assets/22101072/21177597/cb8de628-c1e3-11e6-859d-392e8e46e04b.png)
+![memory gamme](https://cloud.githubusercontent.com/assets/22101072/23033604/a7e63134-f470-11e6-8916-d44013d5559b.png)
 
 The keys light up and play sound and the user follows suit by clicking on the keys.
 
-![game in play](https://cloud.githubusercontent.com/assets/22101072/21177760/74358664-c1e4-11e6-96c0-584cd31194f1.png)
+![game in play](https://cloud.githubusercontent.com/assets/22101072/23033868/9b35b116-f471-11e6-8e64-97c4ba8513d6.png)
 
 **What went well**
 
