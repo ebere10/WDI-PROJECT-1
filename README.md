@@ -1,9 +1,7 @@
 # WDI PROJECT 1
 This is my first project from my web development immersive course at General Assembly
 
-I created a musical memory game called **Play That Tune!** where the user has to repeat the same sequence played by the computer. If they're correct then the computer plays another sequence of a longer duration. But one wrong move and the player goes back to the first stage.
-
-![memory gamme](https://cloud.githubusercontent.com/assets/22101072/23033604/a7e63134-f470-11e6-8916-d44013d5559b.png)
+I created a musical memory game using Javascript, CSS and HTML called **Play That Tune!** where the user has to repeat the same sequence played by the computer. If they're correct then the computer plays another sequence of a longer duration. But one wrong move and the player goes back to the first stage.
 
 The keys light up and play sound and the user follows suit by clicking on the keys.
 
